@@ -1,8 +1,8 @@
 clc; clear; close all;
 
 p          = 10000; 
-n          = ceil(0.2*p);
-s          = ceil(0.1*p);
+n          = ceil(0.20*p);
+s          = ceil(0.05*p);
 test       = 1;
 type       = {'Indipendent','Corrolated'};
 [X,y]      = RandomData(n,p,type{test},s,0.5);
