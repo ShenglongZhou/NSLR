@@ -1,6 +1,6 @@
 clc; close all; clear all
 
-test  = 1;
+test  = 3;
 prob  = {'arcene','colon','duke'};
 data  = load(strcat(prob{test},'.mat')); 
 class = load(strcat(prob{test},'class.mat'));  
