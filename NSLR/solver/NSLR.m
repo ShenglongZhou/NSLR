@@ -88,8 +88,7 @@ for iter  = 0 : maxit
         end
         T     = sort(T);
         XT    = X(:,T); 
-    end
-    
+    end   
         gT    = g(T);
         D     = eXz.*(1-eXz)/scale;  
     if  is_pcg
