@@ -133,26 +133,29 @@ for iter  = 0 : maxit
     T0    = T;
     z     = zeros(p,1);
     z(T)  = zT;
-     
-    if abs(obj-obj0)<1e-6*(1+obj0) && Error  < 1e-6 
-        lam   = max(1e-8/scale,lam/10);     % reduce the regularized parameter eps
-    elseif obj> obj0*10 && iter-itmark > 10 % restart with a lager regularized parameter lam
-        lam   = mark*1e-3/scale;
-        z     = zeros(p,1);
-        Xz    = zeros(n,1);
-        tau   = max(3,tau);    
-        itmark= iter; 
-        mark  = mark+1;
+    
+    if ~isfield(pars,'lam')     
+        if abs(obj-obj0)<1e-6*(1+obj0) && Error  < 1e-6 
+            lam   = max(1e-8/scale,lam/10);     % reduce the regularized parameter eps
+        elseif obj> obj0*10 && iter-itmark > 10 % restart with a lager regularized parameter lam
+            lam   = mark*1e-3/scale;
+            z     = zeros(p,1);
+            Xz    = zeros(n,1);
+            tau   = max(3,tau);    
+            itmark= iter; 
+            mark  = mark+1;
+        end
     end
-   
+    
     eXz   = 1./(1+exp(Xz));  
     g     = ((ey-eXz)'*X)'/scale + lam*z;
     flag  = (tau < min(abs(zT))/max(abs(g(Tc))));    
 
-    if ~flag && iter && mod(iter,10)==0 && Error>1/iter^2 
-       tau = 0.75*tau;    
+    if ~isfield(pars,'tau') 
+        if ~flag && iter && mod(iter,10)==0 && Error>1/iter^2 
+            tau = 0.75*tau;    
+        end
     end
- 
    
 end
 
