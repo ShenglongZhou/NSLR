@@ -1,4 +1,4 @@
-function [X,y,z,out] = RandomData(n,p,type,s,rho)
+function [X,y,z] = RandomData(n,p,type,s,rho)
 
 switch type
     case 'Indipendent'
@@ -8,7 +8,7 @@ switch type
         y(I0) = 0;
         X     = repmat(y.*rand(n,1),1,p)+ randn(n,p);
         z     = [];
-        out   = [];
+
     case 'Indipendent-z'       
         I0    = randperm(p);
         z     = zeros(p,1);
@@ -22,10 +22,7 @@ switch type
         for i = 1:n    
         y(i) = randsrc(1,1,[0 1; 1-q(i) q(i)]);
         end
-        
-        out.f = logistic_fun(Xz,y);
-        out.ser = sum(abs(y-max(0,sign(Xz))))/n;
-   
+          
     case 'Corrolated'
         I0    = randperm(p);
         z     = zeros(p,1);
@@ -49,7 +46,4 @@ switch type
         y(i)  = randsrc(1,1,[0 1; 1-q(i) q(i)]);
         end
         
-        out.f   = LogisticLoss(Xz,y);
-        out.ser = sum(abs(y-max(0,sign(Xz))))/n;
-
 end   
