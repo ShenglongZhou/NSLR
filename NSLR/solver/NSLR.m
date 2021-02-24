@@ -32,7 +32,7 @@ function Out = NSLR(X,y,s,pars)
 % This code is written by Shenglong Zhou
 % and programmed based on the algorithm proposed in 
 % Rui Wang, Naihua Xiu, Shenglong Zhou (2020),
-% Fast Newton Classification Using Sparse Logistic Regression.
+% Newton Method for Sparse Logistic Regression: Quadratic Convergence and Extensive Simulations
 % Send your comments and suggestions to <<< shenglong.zhou@soton.ac.uk >>> 
 % Warning: Accuracy may not be guaranteed !!!!! 
 
