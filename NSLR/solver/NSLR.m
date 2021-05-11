@@ -31,8 +31,10 @@ function Out = NSLR(X,y,s,pars)
 %
 % This code is written by Shenglong Zhou
 % and programmed based on the algorithm proposed in 
-% Rui Wang, Naihua Xiu, Shenglong Zhou (2020),
-% Newton Method for Sparse Logistic Regression: Quadratic Convergence and Extensive Simulations
+% Rui Wang, Naihua Xiu, Shenglong Zhou, J. Comput. Appl. Math., 2021,
+% An extended Newton-type algorithm for L2-regularized sparse logistic 
+% regression and its efficiency for classifying large-scale datasets
+%
 % Send your comments and suggestions to <<< shenglong.zhou@soton.ac.uk >>> 
 % Warning: Accuracy may not be guaranteed !!!!! 
 
