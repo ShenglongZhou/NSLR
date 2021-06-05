@@ -56,7 +56,6 @@ ey     = 1-y;
 lam    = lam*(n/scale);
 g      = ((0.5-y)'*X)'/scale; 
 
-I      = 1:p;
 T0     = [];
 mark   = 1;
 itmark = -10;
@@ -99,20 +98,19 @@ for iter  = 0 : maxit
         H     = @(x)( lam*x+( (D.*(XT*x))'*XT )' );
     end
 
-    if  flag || isempty(setdiff(T,T0))  
+    TTc = setdiff(T0,T);
+    if  flag || isempty(TTc)  
         if is_pcg
-        d     =  H\gT;  
+           d  =  H\gT;  
         else
-        [d,~] = pcg(H,gT,1e-8*s,20);  
+           d  = my_cg(H,gT,1e-10*s,20,zeros(s,1)); 
         end
     else     
-        Tc    = setdiff(I,T);
-        TTc   = intersect(T0,Tc); 
         rhs   = gT-(( D.*( X(:,TTc)*z(TTc) ))'*XT)'; 
         if is_pcg
-        d     = H\rhs;  
+           d  = H\rhs;  
         else
-        [d,~] = pcg(H,rhs,1e-8*s,20);  
+           d  = my_cg(H,rhs,1e-10*s,20,zeros(s,1)); 
         end
         
     end
@@ -131,7 +129,7 @@ for iter  = 0 : maxit
         if obj < obj0 + alpha*1e-6*dg; break; end        
         alpha  = alpha/2;
     end
-
+ 
     T0    = T;
     z     = zeros(p,1);
     z(T)  = zT;
@@ -151,7 +149,7 @@ for iter  = 0 : maxit
     
     eXz   = 1./(1+exp(Xz));  
     g     = ((ey-eXz)'*X)'/scale + lam*z;
-    flag  = (tau < min(abs(zT))/max(abs(g(Tc))));    
+    flag  = (tau < min(abs(zT))/max(abs(g)));    
 
     if ~isfield(pars,'tau') 
         if ~flag && iter && mod(iter,10)==0 && Error>1/iter^2 
@@ -183,4 +181,30 @@ function obj = LogitLoss(Xz,y)
         obj = sum(log(1+exp(Xz))-y.*Xz); 
     end
     obj     = obj/length(y);
+end
+
+% conjugate gradient-------------------------------------------------------
+function x = my_cg(fx,b,cgtol,cgit,x)
+    r = b;
+    e = sum(r.*r);
+    t = e;
+    for i = 1:cgit  
+        if e < cgtol*t; break; end
+        if  i == 1  
+            p = r;
+        else
+            p = r + (e/e0)*p;
+        end  
+        if  isa(fx,'function_handle')
+            w  = fx(p);
+        else
+            w  = fx*p;
+        end
+        a  = e/sum(p.*w);
+        x  = x + a * p;
+        r  = r - a * w;
+        e0 = e;
+        e  = sum(r.*r);
+    end 
+  
 end
